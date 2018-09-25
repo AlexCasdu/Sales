@@ -23,7 +23,6 @@
             get { return this.products; }
             set { this.SetValue(ref this.products, value); }
         }
-
         public bool IsRefreshing
         {
             get { return this.isRefreshing; }

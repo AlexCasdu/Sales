@@ -1,10 +1,11 @@
 ﻿namespace Sales.ViewModels
 {
+    using System;
     using System.Linq;
     using System.Windows.Input;
+    using Common.Models;
     using GalaSoft.MvvmLight.Command;
     using Helpers;
-    using Sales.Common.Models;
     using Services;
     using Xamarin.Forms;
 
@@ -41,8 +42,20 @@
         #endregion
 
         #region Methods
-        private async void Save()
+        
+        #endregion
+
+        #region Commands
+        public ICommand SaveCommand
         {
+            get
+            {
+                return new RelayCommand(Save);
+            }
+        }
+
+        private async void Save()
+        {        
             if (string.IsNullOrEmpty(this.Description))
             {
                 await Application.Current.MainPage.DisplayAlert(
@@ -101,22 +114,13 @@
                     Languages.Accept);
                 return;
             }
+
             var newProduct = (Product)response.Result;
             var viewModel = ProductsViewModel.GetInstance();
             viewModel.Products.Add(newProduct);
             this.isRunning = false;
             this.IsEnabled = true;
-            await Application.Current.MainPage.Navigation.PopAsync();
-        }
-        #endregion
-
-        #region Commands
-        public ICommand SaveCommand
-        {
-            get
-            {
-                return new RelayCommand(Save);
-            }
+            await Application.Current.MainPage.Navigation.PopAsync();        
         }
         #endregion
     }
